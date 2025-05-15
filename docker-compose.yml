@@ -14,8 +14,6 @@ services:
       - db
     networks:
       - app-network
-    environment:
-      - VIRTUAL_HOST=eventmanagement.algharabli-group.work
 
   db:
     image: mysql:8.0
@@ -26,7 +24,7 @@ services:
       MYSQL_USER: event_user
       MYSQL_PASSWORD: P@ssw0rd
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
