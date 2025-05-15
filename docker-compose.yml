@@ -28,9 +28,10 @@ services:
       MYSQL_PASSWORD: P@ssw0rd
     ports:
       - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
     networks:
       - app-network
-
 
 networks:
   app-network:
