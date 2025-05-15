@@ -699,7 +699,7 @@ export default {
           
 
             this.events = this.events.map(ev => {
-                if (ev.id == updated.id) {
+                if (ev.id == data.id) {
                     return {
                         ...ev,
                         bookings_count: data.bookings_count,
