@@ -10,7 +10,6 @@ services:
       - .:/var/www/html
     ports:
       - "8080:80"   # Exposing HTTP port
-      - "8443:443" # Exposing HTTPS port
     depends_on:
       - db
     networks:
