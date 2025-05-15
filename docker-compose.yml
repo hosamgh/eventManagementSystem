@@ -37,9 +37,8 @@ services:
     image: httpd:latest
     container_name: apache_server
     volumes:
-      - ./src:/var/www/html
-      - ./apache-config/httpd.conf:/usr/local/apache2/conf/httpd.conf
-      - ./letsencrypt:/etc/letsencrypt  # Volume to store certs
+      - ./apache-config/httpd.conf:/usr/local/apache2/conf/httpd.conf  # Mounting the custom Apache config
+      - ./letsencrypt:/etc/letsencrypt   # Volume to store certs
     networks:
       - app-network
     ports:
@@ -47,6 +46,9 @@ services:
       - "443:443"
     depends_on:
       - app
+    environment:
+      - VIRTUAL_HOST=eventmanagement.algharabli-group.work
+    entrypoint: "/bin/bash -c 'httpd-foreground'"
 
   # Certbot container for Let's Encrypt SSL certificates
   certbot:
@@ -58,6 +60,8 @@ services:
     volumes:
       - ./letsencrypt:/etc/letsencrypt
       - ./apache-config:/etc/apache2/sites-available
+    depends_on:
+      - apache
 
 networks:
   app-network:
