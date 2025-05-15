@@ -30,8 +30,16 @@ WORKDIR /var/www/html
 # Copy project files to container
 COPY . .
 
-# Set correct permissions for Laravel
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+
+  # Set correct permissions for Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
+  
+# Enable mod_rewrite
+RUN a2enmod rewrite
+
 
 # Install PHP dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
@@ -39,9 +47,11 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Install Node modules and build assets
 RUN npm install && npm run build
 
+# Use custom virtual host config
+COPY ./apache-config/000-default.conf /etc/apache2/sites-enabled/000-default.conf
+
 # Expose HTTP and HTTPS ports
 EXPOSE 80
-EXPOSE 443
 
 # Start Apache when the container runs
 CMD ["apache2-foreground"]
