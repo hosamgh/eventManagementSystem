@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # Laravel app container
   app:
     build:
       context: .
@@ -9,8 +8,9 @@ services:
     container_name: eventmanagementsystem-app
     volumes:
       - .:/var/www/html
-    expose:
-      - "80"   # Exposing HTTP port internally for Apache to access
+    ports:
+      - "8080:80"   # Exposing HTTP port
+      - "8443:443" # Exposing HTTPS port
     depends_on:
       - db
     networks:
@@ -18,7 +18,6 @@ services:
     environment:
       - VIRTUAL_HOST=eventmanagement.algharabli-group.work
 
-  # MySQL database container
   db:
     image: mysql:8.0
     container_name: mysql_db
@@ -32,36 +31,6 @@ services:
     networks:
       - app-network
 
-  # Apache container with SSL enabled
-  apache:
-    image: httpd:latest
-    container_name: apache_server
-    volumes:
-      - ./apache-config/httpd.conf:/usr/local/apache2/conf/httpd.conf  # Mounting the custom Apache config
-      - ./letsencrypt:/etc/letsencrypt   # Volume to store certs
-    networks:
-      - app-network
-    ports:
-      - "8080:80"
-      - "8443:443"
-    depends_on:
-      - app
-    environment:
-      - VIRTUAL_HOST=eventmanagement.algharabli-group.work
-    entrypoint: "/bin/bash -c 'httpd-foreground'"
-
-  # Certbot container for Let's Encrypt SSL certificates
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    networks:
-      - app-network
-    volumes:
-      - ./letsencrypt:/etc/letsencrypt
-      - ./apache-config:/etc/apache2/sites-available
-    depends_on:
-      - apache
 
 networks:
   app-network:
