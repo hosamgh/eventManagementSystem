@@ -43,8 +43,8 @@ RUN npm install && npm run build
 COPY ./ssl /etc/ssl/certs
 
 # Configure Apache to serve the site with SSL
-COPY ./apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY ./apache/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+COPY ./config/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./config/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
 
 # Enable the SSL site and default site in Apache
 RUN a2ensite 000-default.conf
