@@ -39,6 +39,18 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Install Node modules and build assets
 RUN npm install && npm run build
 
+# Enable SSL (for HTTPS)
+COPY ./ssl /etc/ssl/certs
+
+# Configure Apache to serve the site with SSL
+COPY ./apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./apache/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
+
+# Enable the SSL site and default site in Apache
+RUN a2ensite 000-default.conf
+RUN a2ensite default-ssl.conf
+RUN a2enmod ssl
+
 # Expose HTTP and HTTPS ports
 EXPOSE 80
 EXPOSE 443
