@@ -127,7 +127,6 @@
                                     <tr
                                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                         <th class="px-4 py-3">Full Name</th>
-                                        <th class="px-4 py-3">Email</th>
                                         <th class="px-4 py-3">Mobile Number</th>
                                         <th class="px-4 py-3">Event Name</th>
                                         <th class="px-4 py-3">Event Date</th>
@@ -160,9 +159,7 @@
                                             </div>
                                         </td>
 
-                                        <td class="px-4 py-3 text-sm max-w-[50px]">
-                                            {{ history.user_email }}
-                                        </td>
+                                      
                                         <td class="px-4 py-3 text-sm">
                                             {{ history.mobile_number }}
                                         </td>
